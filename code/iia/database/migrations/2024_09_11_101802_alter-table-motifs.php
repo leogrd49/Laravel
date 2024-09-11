@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('motifs', function (Blueprint $table) {
-            $table->id();
-            $table->boolean(column: "is_accessible_salarie")->default(true);
-            $table->string(column: "libelle");
+        Schema::table('motifs', function (Blueprint $table) {
+            $table->timestamps();
+
         });
     }
 
@@ -23,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('motifs');
+        Schema::table('motifs', function (Blueprint $table) {
+            //
+        });
     }
 };
