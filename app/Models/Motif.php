@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $Libelle
@@ -32,4 +32,107 @@ class Motif extends Model
             'is-accessible-salarie' => 'boolean',
         ];
     }
+
+    //
+    //RECUPERATION
+    //
+
+    // public function getToutAvecEloquent()
+    // {
+    //     return Motif::all();
+    // }
+
+
+    // public function getAvecFiltresSimples($clausewhere)
+    // {
+    //     return Motif::where('Libelle', $clausewhere)->get();
+    // }
+
+
+    // public function getAvecFiltresSimplesMultiples($clausewhere)
+    // {
+    //     return Motif::where([
+    //         'colonne1' => $clausewhere[0],
+    //         'colonne2' => $clausewhere[1],
+    //     ]);
+    // }
+
+    //
+    //CREATE
+    //
+
+    // public function create()
+    // {
+    //     $te = new Motif();
+
+    //     $te->colonne1= 'ceci';
+    //     $te->colonne2= 'cela';
+
+    //     $te->save();
+    // }
+
+    // public function create()
+    // {
+    //     DB::table('tests')->insert([
+    //         'colonne1' => 'ceci',
+    //         'colonne2' => 'cela',
+    //     ]);
+    // }
+
+    //
+    //MODIFICATION
+    //
+
+    // public function update($id)
+    // {
+    //     $te = Motif::find($id);
+
+    //     $te->colonne1= 'ceci';
+    //     $te->colonne2= 'cela';
+
+    //     $te->save();
+    // }
+
+    // public function update($id)
+    // {
+    //     DB::table('tests')->insert([
+    //         'colonne1' => 'ceci',
+    //         'colonne2' => 'cela',
+    //     ])->where('id', $id);
+    // }
+
+    //
+    //DELETE
+    //
+
+    // public function delete($id)
+    // {
+    //     DB::table('tests')
+    //     ->where('id', $id)
+    //     ->delete();
+    // }
+
+
+    //
+    //JOINTURES
+    //
+
+    // public function essai()
+    // {
+    //     $liste = DB::table('tests')
+    //     ->join('essaus', 'tests.id', '=', 'essais.test_id')
+    //     ->select('tests.*', 'essais.col1', 'essais.col2')
+    //     ->get();
+    // }
+
+
+    // public function test()
+    // {
+    //     return $this->belongsTo(Test::class);
+    // }
+    // -----------------------------------------------
+    // public function essais()
+    // {
+    //     return $this->hasMany(Essai::class);
+    // }
 }

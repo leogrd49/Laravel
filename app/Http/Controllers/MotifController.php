@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Motif;
 use Illuminate\Http\Request;
+use League\CommonMark\Extension\Attributes\Node\Attributes;
 
 class MotifController extends Controller
 {
@@ -12,7 +13,8 @@ class MotifController extends Controller
      */
     public function index()
     {
-        return view('motif.index');
+        $liste = Motif::all();
+        return dd($liste);
     }
 
     /**

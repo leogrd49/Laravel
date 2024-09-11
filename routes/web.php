@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccueilController;
+use App\Http\Controllers\MotifController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,4 @@ Route::get('/', function () {
 //   ->name("");
 
 Route::get('cool', [AccueilController::class, 'index'] )->name('accueil');
+Route::get('motif', [MotifController::class, 'index'] )->name('accueil');
