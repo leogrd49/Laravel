@@ -4,16 +4,17 @@
     <title>Absences de l'Utilisateur</title>
 </head>
 <body>
-    <h1>Absences</h1>
+    <h1>Absences de {{ $users->prenom }}</h1>
 
     <ul>
-        @foreach ($absences as $absence)
+        @forelse ($absences as $absence)
             <li>
                 Date de début : {{ $absence->date_debut }}
                 Date de fin : {{ $absence->date_fin }}
-                Motif ID : {{ $absence->motif_id }}
+                Motif : {{ $absence->motif->libelle }}
             </li>
-        @endforeach
+            @empty{{__('Aucune absence rescencée pour cet utilisateur')}}
+        @endforelse
     </ul>
 </body>
 </html>

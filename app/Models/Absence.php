@@ -20,4 +20,5 @@ class Absence extends Model
     {
         return $this->belongsTo(Motif::class, 'motif_id');
     }
+
 }

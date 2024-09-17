@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absence;
+use App\Models\Motif;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
@@ -34,14 +35,10 @@ class UserController extends Controller
 
     public function show($id)
 {
-    $absences = DB::table('absences')
-        ->where('user_id', $id)
-        ->get();
+    $users = User::findOrFail($id);
+    $motifs = Motif::all();
+    $absences = Absence::where('user_id', $users->id)->get();
 
-    if ($absences->isEmpty()) {
-        return redirect()->back()->with('error', 'Aucune absence trouvée pour cet utilisateur.');
-    }
-
-    return view('user.show', ['absences' => $absences]);
+    return view('user.show', compact('absences', 'users', 'motifs'));
 }
 }

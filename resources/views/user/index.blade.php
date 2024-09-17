@@ -8,7 +8,7 @@
     <h1>Utilisateurs</h1>
 
     <ul>
-        @forelse ($users as $user)
+        @foreach ($users as $user)
             <li class="mt-2">
                 Prénom : {{ $user->prenom }}
                 nom : {{ $user->nom }}
