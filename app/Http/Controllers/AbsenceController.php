@@ -13,7 +13,8 @@ class AbsenceController extends Controller
      */
     public function index()
     {
-        return view('absence.index');
+        $absences = Absence::all();
+        return view('absence.index', compact('absences'));
     }
 
     /**
@@ -52,6 +53,10 @@ class AbsenceController extends Controller
         ->select('users.prenom', 'users.nom')
         ->first();
 
+    if(!$absence)
+    {
+        return ('Aucune absence ne porte ce numéro d\'identification : ' . $id);
+    }
 
     // Afficher les détails de l'absence, y compris les informations utilisateur et motif
     return view('absence.show', [

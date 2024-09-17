@@ -27,5 +27,5 @@ Route::get('/', function () {
 
 Route::get('cool', [AccueilController::class, 'index'] )->name('accueil');
 Route::get('motif', [MotifController::class, 'index'] )->name('Motifs');
-Route::get('absence/{id}', [AbsenceController::class, 'show'] )->name('Absences');
+Route::resource('/absence', AbsenceController::class);
 Route::resource('/user', UserController::class );
