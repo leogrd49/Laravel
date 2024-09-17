@@ -14,5 +14,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         (new MotifSeeder)->run();
+        (new UserSeeder)->run();
+        (new AbsenceSeeder)->run();
     }
 }
+

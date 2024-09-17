@@ -2,17 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Models\Motif;
+use App\Models\Absence;
+
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class MotifSeeder extends Seeder
+class AbsenceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Motif::factory(20)->create();
+        Absence::factory(20)->create();
     }
 }

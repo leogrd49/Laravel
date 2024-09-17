@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Motif;
+use App\Models\Absence;
+
 use Illuminate\Http\Request;
 
-class MotifController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $liste = Classe::all();
-        dd($liste);
+        //
     }
 
     /**
@@ -35,15 +35,18 @@ class MotifController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Motif $motif)
+    public function show(string $id)
     {
-        //
+        $absences = Absence::where('user_id', $id)->get();
+
+        // Retourner les absences au format JSON
+        return response()->json($absences);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Motif $motif)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +54,7 @@ class MotifController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Motif $motif)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +62,7 @@ class MotifController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Motif $motif)
+    public function destroy(string $id)
     {
         //
     }
