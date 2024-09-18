@@ -27,6 +27,8 @@ class Motif extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['libelle'];
+
     public function absences()
     {
         return $this->hasMany(Absence::class, 'motif_id');

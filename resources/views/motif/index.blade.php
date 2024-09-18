@@ -10,6 +10,10 @@ Motifs List
         <a class="bg-red-300 w-min rounded-lg border border-red-800 p-2 font-bold text-center text-red-800 hover:bg-red-400"
             href="{{ url('/') }}">Back</a>
     </div>
+    <div class="mb-3">
+        <a class="bg-red-300 w-min rounded-lg border border-red-800 p-2 font-bold text-right text-red-800 hover:bg-red-400"
+            href="{{ route('motif.create') }}">Create</a>
+    </div>
     <ul class="space-y-4">
         @foreach ($motifs as $motif)
             <li class="bg-red-50 p-4 rounded-lg shadow flex justify-between items-center">
@@ -20,9 +24,9 @@ Motifs List
                             class="text-red-700">{{ $motif->libelle }}</span></p>
                 </div>
                 <div>
-                    <a href="{{ route('motif.show', $motif->id) }}"
+                    <a href="{{ route('motif.edit', $motif->id) }}"
                         class="text-red-500 hover:text-red-700 font-semibold">
-                        View Details
+                        Modifier
                     </a>
                 </div>
             </li>
