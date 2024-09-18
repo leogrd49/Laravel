@@ -14,7 +14,7 @@ class AbsenceController extends Controller
     public function index()
     {
         $absences = Absence::all();
-        return view('absence.index', compact('absences'));
+        return view('absence.index', data: compact('absences'));
     }
 
     /**

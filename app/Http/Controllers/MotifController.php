@@ -13,8 +13,10 @@ class MotifController extends Controller
      */
     public function index()
     {
-        $liste = Motif::all();
-        return dump($liste);
+        $motifs = Motif::all();
+        // return dump($liste);
+        return view(view: 'motif.index', data: compact('motifs'));
+
     }
 
     /**

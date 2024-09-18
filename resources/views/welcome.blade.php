@@ -32,6 +32,9 @@
                             <a class="border-2 border-blue-600 text-blue-600 px-4 py-2 inline-block rounded-lg hover:bg-blue-600 hover:text-white" href="{{route('user.index')}}">
                                 Utilisateurs
                             </a>
+                            <a class="border-2 border-blue-600 text-blue-600 px-4 py-2 inline-block rounded-lg hover:bg-blue-600 hover:text-white" href="{{route('motif.index')}}">
+                                Motif
+                            </a>
                         </div>
                         <!-- Your existing navigation here -->
                     </header>
