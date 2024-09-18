@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layouts.app')
+@extends('layouts.motif')
+
 @section('titre')
     Motifs List
 @endsection

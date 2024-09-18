@@ -1,11 +1,11 @@
-@extends('layout.app')
+@extends('layouts.app')
 @section('titre')
 absences EDIT
 @endsection
 
-<h2 class="font-bold mb-3 text-center text-red-300">EDIT</h2>
+<h2 class="font-bold mb-3 text-center text-green-300">EDIT</h2>
 
-<a class="bg-red-300 rounded-lg border border-red-800 p-2 font-bold text-red-800 hover:bg-red-400"
+<a class="bg-green-300 rounded-lg border border-green-800 p-2 font-bold text-green-800 hover:bg-green-400"
 href="{{ url('/') }}">Back</a>
 
 <form action="{{ route('absence.update', $absence->id) }}" method="post">
@@ -36,7 +36,7 @@ href="{{ url('/') }}">Back</a>
         <input type="date" name="date_fin" id="date_fin" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="{{ $absence->date_fin }}">
     </div>
     <div class="flex items-center justify-between">
-        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Editer
         </button>
     </div>

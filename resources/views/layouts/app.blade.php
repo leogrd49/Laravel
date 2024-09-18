@@ -9,7 +9,6 @@
     <title> @yield('titre')</title>
 </head>
 
-<body class="bg-red-100 min-h-screen p-10">
 
 </body>
 

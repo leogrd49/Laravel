@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.app')
 @section('titre')
 Motifs EDIT
 @endsection
