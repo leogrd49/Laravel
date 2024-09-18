@@ -1,6 +1,6 @@
 @extends('layout.app')
 @section('titre')
-Detail User
+    Detail User
 @endsection
 
 <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
