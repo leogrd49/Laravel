@@ -32,7 +32,9 @@ class MotifController extends Controller
     public function store(Request $request)
     {
 
-        Motif::create($request->all());
+        $motif = new Motif;
+        $motif->libelle = $request->libelle;
+        $motif->save();
 
         return redirect()->route('motif.index')->with('success', 'Motif created successfully.');
     }
@@ -59,7 +61,8 @@ class MotifController extends Controller
     public function update(Request $request, Motif $motif)
     {
 
-        $motif->update(attributes: $request->all());
+        $motif->libelle = $request->libelle;
+        $motif->save();
 
         return redirect()->route('motif.index')->with('success', 'Motif updated successfully.');
     }
@@ -69,6 +72,8 @@ class MotifController extends Controller
      */
     public function destroy(Motif $motif)
     {
-        //
+        $motif->delete();
+
+        return redirect()->route('motif.index')->with('success', 'Motif deleted successfully.');
     }
 }

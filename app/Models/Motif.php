@@ -27,7 +27,7 @@ class Motif extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['libelle'];
+    // protected $fillable = ['libelle'];
 
     public function absences()
     {
