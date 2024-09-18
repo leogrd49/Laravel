@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absence;
+use App\Models\Motif;
+use App\Models\User;
+
 use DB;
 use Illuminate\Http\Request;
 
@@ -13,6 +16,7 @@ class AbsenceController extends Controller
      */
     public function index()
     {
+
         $absences = Absence::all();
         return view('absence.index', data: compact('absences'));
     }
@@ -22,7 +26,9 @@ class AbsenceController extends Controller
      */
     public function create()
     {
-        return view('absence.create');
+        $users = User::all();
+        $motifs = Motif::all();
+        return view('absence.create', compact('users', 'motifs'));
     }
 
     /**
@@ -30,7 +36,19 @@ class AbsenceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'date_debut' => 'required|date|before:date_fin',
+            'date_fin' => 'required|date',
+        ]);
+
+        $absence = new Absence;
+        $absence->user_id = $request->user_id;
+        $absence->motif_id = $request->motif_id;
+        $absence->date_debut = $request->date_debut;
+        $absence->date_fin = $request->date_fin;
+        $absence->save();
+
+        return redirect()->route('absence.index')->with('success', 'Absence created successfully.');
     }
 
     /**
@@ -69,17 +87,34 @@ class AbsenceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Absence $absence)
+    public function edit($id)
     {
-        return view('absence.edit');
+        $absence = Absence::find($id);
+        $users = User::all();
+        $motifs = Motif::all();
+        return view('absence.edit', compact('absence', 'users', 'motifs'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Absence $absence)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'motif_id' => 'required|exists:motifs,id',
+            'date_debut' => 'required|date|before:date_fin',
+            'date_fin' => 'required|date',
+        ]);
+
+        $absence = Absence::find($id);
+        $absence->user_id = $request->user_id;
+        $absence->motif_id = $request->motif_id;
+        $absence->date_debut = $request->date_debut;
+        $absence->date_fin = $request->date_fin;
+        $absence->save();
+
+        return redirect()->route('absence.index')->with('success', 'Absence updated successfully.');
     }
 
     /**
@@ -87,6 +122,8 @@ class AbsenceController extends Controller
      */
     public function destroy(Absence $absence)
     {
-        //
+        $absence->delete();
+
+        return redirect()->route('absence.index')->with('success', 'Motif deleted successfully.');
     }
 }
