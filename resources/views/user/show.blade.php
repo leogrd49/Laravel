@@ -18,11 +18,13 @@ User Details
 
     <div class="mt-6">
         <h2 class="text-2xl font-bold mb-3">Absences</h2>
+        <h3 class="text-1xl font-bold mb-3">Nombre d'absence(s): {{ $absences->count() }}</h3>
+
         <ul class="space-y-4">
             @foreach ($absences as $absence)
                 <li class="bg-gray-50 p-4 rounded-lg shadow flex justify-between items-center">
                     <div>
-                        <p><strong>Motif:</strong> {{ $motifs->firstWhere('id', $absence->motif_id)->libelle }}</p>
+                        <p><strong>Motif:</strong> {{ $motifs->firstWhere('id', $absence->motif_id)?->libelle ?? 'Motif not found' }}</p>
                         <p><strong>Start Date:</strong> {{ $absence->date_debut }}</p>
                         <p><strong>End Date:</strong> {{ $absence->date_fin }}</p>
                     </div>

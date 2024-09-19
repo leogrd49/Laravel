@@ -34,7 +34,7 @@ class MotifController extends Controller
     {
         $motif = new Motif();
         $motif->libelle = $request->input('libelle');
-        $motif->is_accessible_salarie = $request->input('is_accessible_salarie') == '1'; // Convert to boolean
+        $motif->is_accessible_salarie = $request->input('is_accessible_salarie') === '1'; // Convert to boolean
         $motif->save();
 
         return redirect()->route('motif.index')->with('success', 'Motif created successfully.');
@@ -62,7 +62,7 @@ class MotifController extends Controller
     public function update(MotifRequest $request, Motif $motif): RedirectResponse
     {
         $motif->libelle = $request->input('libelle');
-        $motif->is_accessible_salarie = $request->input('is_accessible_salarie') == '1'; // Convert to boolean
+        $motif->is_accessible_salarie = $request->input('is_accessible_salarie') === '1';
         $motif->save();
 
         return redirect()->route('motif.index')->with('success', 'Motif updated successfully.');
