@@ -7,22 +7,29 @@ use Illuminate\Foundation\Http\FormRequest;
 class UserRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Détermine si l'utilisateur est autorisé à faire cette requête.
+     *
+     * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Obtient les règles de validation qui s'appliquent à la requête.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array
      */
-    public function rules(): array
+    public function rules()
     {
+        $userId = $this->route('user');
+
         return [
-            //
+            'prenom' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $userId,
+            'password' => 'nullable|string|min:8|confirmed',
         ];
     }
 }

@@ -14,6 +14,7 @@ class MotifController extends Controller
     public function index(): \Illuminate\View\View
     {
         $motifs = Motif::all();
+
         return view(view: 'motif.index', data: compact('motifs'));
     }
 
@@ -28,7 +29,6 @@ class MotifController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(MotifRequest $request): \Illuminate\Http\RedirectResponse
     {
         $motif = new Motif();

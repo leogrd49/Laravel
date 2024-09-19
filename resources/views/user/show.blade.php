@@ -1,35 +1,33 @@
 @extends('layouts.app')
-
 @section('titre')
-    Detail User
+User Details
 @endsection
 
 <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-    <h1 class="text-4xl font-bold mb-6 text-center text-blue-800">{{ $users->prenom }} {{ $users->nom }}'s Absences</h1>
-    <div class="mb-3">
-        <a class="bg-blue-300 w-min rounded-lg border border-blue-800 p-2 font-bold text-center text-blue-800 hover:bg-blue-400"
-            href="{{ url('/user') }}">Back</a>
+    <h1 class="text-4xl font-bold mb-6 text-center text-blue-800">User Details</h1>
+
+    <a class="bg-blue-300 rounded-lg border border-blue-800 p-2 font-bold text-blue-800 hover:bg-blue-400"
+       href="{{ route('user.index') }}">Back</a>
+
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold">User Information</h2>
+        <p><strong>First Name:</strong> {{ $user->prenom }}</p>
+        <p><strong>Last Name:</strong> {{ $user->nom }}</p>
+        <p><strong>Email:</strong> {{ $user->email }}</p>
     </div>
-    <ul class="space-y-4">
-        @forelse ($absences as $absence)
-            <li class="bg-blue-50 p-5 rounded-lg shadow-md">
-                <div class="mb-2">
-                    <strong>Start Date:</strong>
-                    <span class="text-blue-700">{{ $absence->date_debut }}</span>
-                </div>
-                <div class="mb-2">
-                    <strong>End Date:</strong>
-                    <span class="text-blue-700">{{ $absence->date_fin }}</span>
-                </div>
-                <div>
-                    <strong>Reason:</strong>
-                    <span class="text-blue-700">{{ $absence->motif ? $absence->motif->libelle : 'N/A' }}</span>
-                </div>
-            </li>
-        @empty
-            <div class="bg-blue-100 p-5 rounded-lg text-center">
-                No absences recorded for this user
-            </div>
-        @endforelse
-    </ul>
+
+    <div class="mt-6">
+        <h2 class="text-2xl font-bold mb-3">Absences</h2>
+        <ul class="space-y-4">
+            @foreach ($absences as $absence)
+                <li class="bg-gray-50 p-4 rounded-lg shadow flex justify-between items-center">
+                    <div>
+                        <p><strong>Motif:</strong> {{ $motifs->firstWhere('id', $absence->motif_id)->libelle }}</p>
+                        <p><strong>Start Date:</strong> {{ $absence->date_debut }}</p>
+                        <p><strong>End Date:</strong> {{ $absence->date_fin }}</p>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    </div>
 </div>

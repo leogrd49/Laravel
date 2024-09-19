@@ -6,17 +6,14 @@ use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
 use DB;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 
 class AbsenceController extends Controller
 {
-    /**
-     *
-     */
     public function index(): \Illuminate\View\View
     {
         $absences = Absence::all();
+
         return view('absence.index', data: compact('absences'));
     }
 
@@ -27,8 +24,10 @@ class AbsenceController extends Controller
     {
         $users = User::all();
         $motifs = Motif::all();
+
         return view('absence.create', compact('users', 'motifs'));
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -119,6 +118,7 @@ class AbsenceController extends Controller
     public function destroy(Absence $absence): \Illuminate\Http\RedirectResponse
     {
         $absence->delete();
+
         return redirect('absence');
     }
 }
