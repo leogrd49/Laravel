@@ -124,6 +124,7 @@ class AbsenceController extends Controller
     {
         $absence->delete();
 
-        return redirect()->route('absence.index')->with('success', 'Motif deleted successfully.');
+        return redirect('absence');
     }
+
 }
