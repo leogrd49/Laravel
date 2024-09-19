@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Requests\UserRequest;
-
 
 class UserController extends Controller
 {
     public function index(): \Illuminate\View\View
     {
         $users = User::all();
+
         return view('user.index', compact('users'));
     }
 
@@ -57,13 +56,13 @@ class UserController extends Controller
         return view('user.show', compact('user', 'absences', 'motifs'));
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(int $id): \Illuminate\View\View
     {
         $user = User::findOrFail($id);
+
         return view('user.edit', compact('user'));
     }
 

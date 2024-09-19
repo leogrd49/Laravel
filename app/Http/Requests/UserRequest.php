@@ -19,16 +19,16 @@ class UserRequest extends FormRequest
     /**
      * Obtient les règles de validation qui s'appliquent à la requête.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
         $userId = $this->route('user');
 
         return [
             'prenom' => 'required|string|max:255',
             'nom' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $userId,
+            'email' => 'required|email|unique:users,email,' . ($userId ?? 'NULL'),
             'password' => 'nullable|string|min:8|confirmed',
         ];
     }
