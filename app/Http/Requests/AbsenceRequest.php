@@ -11,7 +11,6 @@ class AbsenceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Vous pouvez ajuster cette autorisation en fonction de vos besoins
         return true;
     }
 

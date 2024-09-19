@@ -24,6 +24,23 @@
             @enderror
         </div>
 
+        <div class="mb-4">
+            <span class="block text-gray-700 text-sm font-bold mb-2">Accessible aux salariés ?</span>
+            <div class="flex items-center">
+                <label class="mr-4">
+                    <input type="radio" name="is_accessible_salarie" value="1" {{ old('is_accessible_salarie', $motif->is_accessible_salarie) ? 'checked' : '' }}>
+                    Oui
+                </label>
+                <label>
+                    <input type="radio" name="is_accessible_salarie" value="0" {{ !old('is_accessible_salarie', $motif->is_accessible_salarie) ? 'checked' : '' }}>
+                    Non
+                </label>
+            </div>
+            @error('is_accessible_salarie')
+                <div class="text-red-500 text-xs italic mt-1">{{ $message }}</div>
+            @enderror
+        </div>
+
         <div class="flex items-center justify-center">
             <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Modifier

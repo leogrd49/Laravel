@@ -50,7 +50,6 @@ class UserController extends Controller
         $motifs = Motif::all();
         $absences = Absence::where('user_id', $user->id)->get();
 
-        // // Débogage temporaire
         // dd($user, $absences, $motifs);
 
         return view('user.show', compact('user', 'absences', 'motifs'));

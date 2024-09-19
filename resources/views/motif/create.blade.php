@@ -16,11 +16,25 @@
 
         <div class="mb-4">
             <label for="libelle" class="block text-gray-700 text-sm font-bold mb-2">Label</label>
+            <input type="text" name="libelle" id="libelle" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Label" value="{{ old('libelle') }}">
             @error('libelle')
                 <div class="text-red-500 text-xs italic mb-2">{{ $message }}</div>
             @enderror
-            <input type="text" name="libelle" id="libelle" value="{{ old('libelle') }}" placeholder="Nom du Motif"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="mb-4">
+            <span class="block text-gray-700 text-sm font-bold mb-2">Is Accessible?</span>
+            <label class="inline-flex items-center mr-4">
+                <input type="radio" name="is_accessible_salarie" value="1" class="form-radio" {{ old('is_accessible_salarie') == '1' ? 'checked' : '' }}>
+                <span class="ml-2">Yes</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" name="is_accessible_salarie" value="0" class="form-radio" {{ old('is_accessible_salarie') == '0' ? 'checked' : '' }}>
+                <span class="ml-2">No</span>
+            </label>
+            @error('is_accessible_salarie')
+                <div class="text-red-500 text-xs italic mb-2">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="flex items-center justify-center">

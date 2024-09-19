@@ -7,14 +7,9 @@
 
         <title>Laravel</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
-        <!-- Styles -->
-        <style>
-            /* Your existing styles here */
-        </style>
     </head>
     <body class="font-sans antialiased dark:bg-black dark:text-white/50">
         <div class="bg-grey-50 text-grey-500 dark:bg-grey-900 dark:text-grey-500">
@@ -23,7 +18,6 @@
                 <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                     <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
                         <div class="flex lg:justify-center lg:col-start-2">
-                            <!-- Your existing logo here -->
                         </div>
                         <div class="flex lg:justify-center lg:col-start-2">
                             <a class="border-2 mr-2 border-green-600 text-green-600 px-4 py-2 inline-block rounded-lg hover:bg-green-600 hover:text-white" href="{{ route('absence.index') }}">
@@ -36,10 +30,8 @@
                                 Motif
                             </a>
                         </div>
-                        <!-- Your existing navigation here -->
                     </header>
 
-                    <!-- Your existing main content here -->
 
                     <footer class="py-16 text-center text-sm text-white-500 dark:text-white-500">
                         Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
