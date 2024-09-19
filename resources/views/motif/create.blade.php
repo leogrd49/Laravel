@@ -1,23 +1,32 @@
 @extends('layouts.app')
+
 @section('titre')
-Motifs Create
+    Créer un Motif
 @endsection
 
-<h2 class="font-bold mb-3 text-center text-red-300">CREATE</h2>
+<div class="flex flex-col items-center justify-center min-h-screen py-6 px-4 bg-gray-100">
+    <h2 class="text-center text-red-300 font-bold mb-6 text-2xl">Créer un Motif</h2>
 
-<a class="bg-red-300 rounded-lg border border-red-800 p-2 font-bold text-red-800 hover:bg-red-400"
-href="{{ url('/') }}">Back</a>
+    <a href="{{ url('/') }}" class="mb-6 bg-red-300 text-red-800 font-bold py-2 px-4 rounded-lg border border-red-800 hover:bg-red-400">
+        Retour
+    </a>
 
-<form action="{{ route('motif.store') }}" method="POST">
-    @csrf
-    <div class="mb-4">
-        <label for="libelle" class="block text-gray-700 text-sm font-bold mb-2">Label</label>
-        <input type="text" name="libelle" id="libelle" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Motif Name">
-    </div>
-    <div class="flex items-center justify-between">
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            Create
-        </button>
-    </div>
-</form>
+    <form action="{{ route('motif.store') }}" method="POST" class="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        @csrf
 
+        <div class="mb-4">
+            <label for="libelle" class="block text-gray-700 text-sm font-bold mb-2">Label</label>
+            @error('libelle')
+                <div class="text-red-500 text-xs italic mb-2">{{ $message }}</div>
+            @enderror
+            <input type="text" name="libelle" id="libelle" value="{{ old('libelle') }}" placeholder="Nom du Motif"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="flex items-center justify-center">
+            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Créer
+            </button>
+        </div>
+    </form>
+</div>

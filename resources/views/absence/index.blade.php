@@ -22,10 +22,13 @@
                 <div>
                     <p class="text-xl font-semibold">Absence Number: <span
                             class="text-green-700">{{ $absence->id }}</span></p>
+
                     <p class="text-xl font-semibold">Absence Reason: <span
-                            class="text-green-700">{{ $absence->motif->libelle }}</span></p>
-                    <p class="text-xl font-semibold">User: <span class="text-green-700">{{ $absence->user->prenom }}
-                            {{ $absence->user->nom }}</span></p>
+                            class="text-green-700">{{ $absence->motif ? $absence->motif->libelle : 'N/A' }}</span></p>
+
+                    <p class="text-xl font-semibold">User: <span
+                            class="text-green-700">{{ $absence->user ? $absence->user->prenom . ' ' . $absence->user->nom : 'N/A' }}</span>
+                    </p>
                 </div>
                 <div class="flex items-center">
                     <a href="{{ route('absence.edit', $absence->id) }}" class="mr-2">

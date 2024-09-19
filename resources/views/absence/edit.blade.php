@@ -1,43 +1,56 @@
 @extends('layouts.app')
+
 @section('titre')
-absences EDIT
+    Modifier une Absence
 @endsection
 
-<h2 class="font-bold mb-3 text-center text-green-300">EDIT</h2>
+<div class="flex flex-col items-center justify-center min-h-screen py-6 px-4 bg-gray-100">
+    <h2 class="text-center text-green-300 font-bold mb-6 text-2xl">Modifier une Absence</h2>
 
-<a class="bg-green-300 rounded-lg border border-green-800 p-2 font-bold text-green-800 hover:bg-green-400"
-href="{{ url('/') }}">Back</a>
+    <a href="{{ url('/') }}" class="mb-6 bg-green-300 text-green-800 font-bold py-2 px-4 rounded-lg border border-green-800 hover:bg-green-400">
+        Retour
+    </a>
 
-<form action="{{ route('absence.update', $absence->id) }}" method="post">
-    @csrf
-    @method('put')
-    <div class="mb-4">
-        <label for="user_id" class="block text-gray-700 text-sm font-bold mb-2">User</label>
-        <select name="user_id" id="user_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            @foreach ($users as $user)
-                <option value="{{ $user->id }}" {{ $absence->user_id == $user->id ? 'selected' : '' }}>{{ $user->prenom }} {{ $user->nom }}</option>
-            @endforeach
-        </select>
-    </div>
-    <div class="mb-4">
-        <label for="motif_id" class="block text-gray-700 text-sm font-bold mb-2">Motif</label>
-        <select name="motif_id" id="motif_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            @foreach ($motifs as $motif)
-                <option value="{{ $motif->id }}" {{ $absence->motif_id == $motif->id ? 'selected' : '' }}>{{ $motif->libelle }}</option>
-            @endforeach
-        </select>
-    </div>
-    <div class="mb-4">
-        <label for="date_debut" class="block text-gray-700 text-sm font-bold mb-2">Start Date</label>
-        <input type="date" name="date_debut" id="date_debut" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="{{ $absence->date_debut }}">
-    </div>
-    <div class="mb-4">
-        <label for="date_fin" class="block text-gray-700 text-sm font-bold mb-2">End Date</label>
-        <input type="date" name="date_fin" id="date_fin" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="{{ $absence->date_fin }}">
-    </div>
-    <div class="flex items-center justify-between">
-        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            Editer
-        </button>
-    </div>
-</form>
+    <form action="{{ route('absence.update', $absence->id) }}" method="POST" class="w-full max-w-lg bg-white p-6 rounded-lg shadow-md">
+        @csrf
+        @method('PUT')
+
+        <div class="mb-4">
+            <label for="user_id" class="block text-gray-700 text-sm font-bold mb-2">Utilisateur</label>
+            <select name="user_id" id="user_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @foreach ($users as $user)
+                    <option value="{{ $user->id }}" {{ $absence->user_id == $user->id ? 'selected' : '' }}>
+                        {{ $user->prenom }} {{ $user->nom }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label for="motif_id" class="block text-gray-700 text-sm font-bold mb-2">Motif</label>
+            <select name="motif_id" id="motif_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @foreach ($motifs as $motif)
+                    <option value="{{ $motif->id }}" {{ $absence->motif_id == $motif->id ? 'selected' : '' }}>
+                        {{ $motif->libelle }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label for="date_debut" class="block text-gray-700 text-sm font-bold mb-2">Date de début</label>
+            <input type="date" name="date_debut" id="date_debut" value="{{ old('date_debut', $absence->date_debut) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="mb-4">
+            <label for="date_fin" class="block text-gray-700 text-sm font-bold mb-2">Date de fin</label>
+            <input type="date" name="date_fin" id="date_fin" value="{{ old('date_fin', $absence->date_fin) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="flex items-center justify-center">
+            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Modifier
+            </button>
+        </div>
+    </form>
+</div>
