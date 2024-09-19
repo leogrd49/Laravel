@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\AbsenceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,6 +21,7 @@ use Database\Factories\UserFactory; // Import the UserFactory class
  */
 class User extends Authenticatable
 {
+    /** @use HasFactory<AbsenceFactory>  */
     use HasFactory, Notifiable;
 
     /**

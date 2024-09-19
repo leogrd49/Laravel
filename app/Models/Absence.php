@@ -15,6 +15,7 @@ use Database\Factories\AbsenceFactory;
  */
 class Absence extends Model
 {
+    /** @use HasFactory<AbsenceFactory>  */
     use HasFactory;
 
     /**
