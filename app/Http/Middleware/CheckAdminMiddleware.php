@@ -2,20 +2,18 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Closure;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
-
 
 class CheckAdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->admin) {
-            return $next($request);
+        if (!$request->user() || !$request->user()->admin) {
+            abort(403, 'Accès non autorisé.');
         }
 
-        return redirect('/')->with('error', 'You do not have permission to access this page.');
+        return $next($request);
     }
 }

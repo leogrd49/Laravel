@@ -3,122 +3,92 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absence;
-use App\Models\Motif;
 use App\Models\User;
-use DB;
+use App\Models\Motif;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AbsenceController extends Controller
 {
-    public function index(): \Illuminate\View\View
+    public function index()
     {
-        $absences = Absence::all();
-
-        return view('absence.index', data: compact('absences'));
+        $user = Auth::user();
+        if ($user->admin) {
+            $absences = Absence::all();
+        } else {
+            $absences = $user->absences;
+        }
+        return view('absence.index', compact('absences'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): \Illuminate\View\View
+    public function create()
     {
-        $users = User::all();
+        $user = Auth::user();
+        $users = $user->admin ? User::all() : [$user];
         $motifs = Motif::all();
-
         return view('absence.create', compact('users', 'motifs'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request)
     {
-        $request->validate([
-            'date_debut' => 'required|date|before:date_fin',
-            'date_fin' => 'required|date',
+        $user = Auth::user();
+        $data = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'motif_id' => 'required|exists:motifs,id',
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date|after_or_equal:date_debut',
         ]);
 
-        $absence = new Absence();
-        $absence->user_id = $request->user_id;
-        $absence->motif_id = $request->motif_id;
-        $absence->date_debut = $request->date_debut;
-        $absence->date_fin = $request->date_fin;
-        $absence->save();
-
-        return redirect()->route('absence.index')->with('success', 'Absence created successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id): \Illuminate\View\View
-    {
-        $absence = Absence::with(['user', 'motif'])->where('id', $id)->first();
-
-        $motif = DB::table('motifs')
-            ->join('absences', 'motifs.id', '=', 'absences.motif_id')
-            ->where('absences.id', $id)
-            ->select('motifs.Libelle')
-            ->first();
-
-        $user = DB::table('users')
-            ->join('absences', 'users.id', '=', 'absences.user_id')
-            ->where('absences.id', $id)
-            ->select('users.prenom', 'users.nom')
-            ->first();
-
-        if (! $absence) {
-            return view('errors.not_found', ['message' => 'Aucune absence ne porte ce numéro d\'identification.']);
+        if (!$user->admin && $data['user_id'] != $user->id) {
+            return redirect()->route('absence.index')->with('error', 'Vous ne pouvez pas créer une absence pour un autre utilisateur.');
         }
 
-        return view('absence.show', [
-            'absence' => $absence,
-            'user' => $user,
-            'motif' => $motif,
-        ]);
+        Absence::create($data);
+        return redirect()->route('absence.index')->with('success', 'Absence créée avec succès.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(int $id): \Illuminate\View\View
+    public function edit(Absence $absence)
     {
-        $absence = Absence::find($id);
-        $users = User::all();
-        $motifs = Motif::all();
+        $user = Auth::user();
+        if (!$user->admin && ($absence->user_id != $user->id || $absence->status == 'valide')) {
+            return redirect()->route('absence.index')->with('error', 'Vous ne pouvez pas modifier cette absence.');
+        }
 
+        $users = $user->admin ? User::all() : [$user];
+        $motifs = Motif::all();
         return view('absence.edit', compact('absence', 'users', 'motifs'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Absence $absence)
     {
-        $request->validate([
+        $user = Auth::user();
+        if (!$user->admin && ($absence->user_id != $user->id || $absence->status == 'valide')) {
+            return redirect()->route('absence.index')->with('error', 'Vous ne pouvez pas modifier cette absence.');
+        }
+
+        $data = $request->validate([
             'user_id' => 'required|exists:users,id',
             'motif_id' => 'required|exists:motifs,id',
-            'date_debut' => 'required|date|before:date_fin',
-            'date_fin' => 'required|date',
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date|after_or_equal:date_debut',
         ]);
 
-        $absence = Absence::find($id);
-        $absence->user_id = $request->user_id;
-        $absence->motif_id = $request->motif_id;
-        $absence->date_debut = $request->date_debut;
-        $absence->date_fin = $request->date_fin;
-        $absence->save();
+        if ($user->admin) {
+            $data['status'] = $request->input('status', 'en_attente');
+        }
 
-        return redirect()->route('absence.index')->with('success', 'Absence updated successfully.');
+        $absence->update($data);
+        return redirect()->route('absence.index')->with('success', 'Absence mise à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Absence $absence): \Illuminate\Http\RedirectResponse
+    public function destroy(Absence $absence)
     {
-        $absence->delete();
+        $user = Auth::user();
+        if (!$user->admin && $absence->user_id != $user->id) {
+            return redirect()->route('absence.index')->with('error', 'Vous ne pouvez pas supprimer cette absence.');
+        }
 
-        return redirect('absence');
+        $absence->delete();
+        return redirect()->route('absence.index')->with('success', 'Absence supprimée avec succès.');
     }
 }

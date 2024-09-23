@@ -15,18 +15,17 @@ Route::get('/welcome', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return redirect('/');
+})->middleware(['auth'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+Route::middleware(['auth'])->group(function () {
     Route::resource('/absence', AbsenceController::class);
-    Route::resource('/user', UserController::class);
-    Route::resource('/motif', MotifController::class)->middleware('check.admin');
-});
 
+    Route::middleware(['check.admin'])->group(function () {
+        Route::resource('/user', UserController::class);
+        Route::resource('/motif', MotifController::class);
+    });
+});
 
 require __DIR__ . '/auth.php';

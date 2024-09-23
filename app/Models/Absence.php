@@ -38,6 +38,15 @@ class Absence extends Model
     /** @use HasFactory<AbsenceFactory>  */
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'motif_id',
+        'date_debut',
+        'date_fin',
+        'status'
+    ];
+
+
     /**
      * Définir la relation avec l'utilisateur.
      *
