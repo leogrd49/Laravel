@@ -45,10 +45,18 @@
                             href="{{ route('user.index') }}">
                             Utilisateurs
                         </a>
-                        <a class="border-2 border-red-600 text-red-600 px-4 py-2 inline-block rounded-lg hover:bg-red-600 hover:text-white"
-                            href="{{ route('motif.index') }}">
-                            Motif
-                        </a>
+                        @if (Auth::check() && Auth::user()->admin === true)
+                            <a class="border-2 border-red-600 text-red-600 px-4 py-2 inline-block rounded-lg hover:bg-red-600 hover:text-white"
+                                href="{{ route('motif.index') }}">
+                                Admin Motif
+                            </a>
+                        @else
+                            <a class="border-2 border-gray-600 text-gray-600 px-4 py-2 inline-block rounded-lg hover:bg-gray-600 hover:text-white"
+                                href="{{ route('motif.index') }}">
+                                Motif
+                            </a>
+                        @endif
+
                     </div>
                 </header>
 

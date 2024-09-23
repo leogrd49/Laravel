@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Silber\Bouncer\Database\HasRolesAndAbilities;
+
 
 /**
  * @property int $id
@@ -51,13 +53,24 @@ class User extends Authenticatable
 {
     /** @use HasFactory<AbsenceFactory>  */
     use HasFactory, Notifiable;
+    use HasRolesAndAbilities;
+
 
     use SoftDeletes;
 
-    protected $fillable = ['prenom', 'nom', 'email', 'password'];
+    protected $fillable = ['prenom', 'nom', 'email', 'password', 'admin'];
+
+
+    public function getInitialesAttribute()
+    {
+        return ucfirst($this->prenom)[0] . ucfirst($this->nom)[0];
+    }
+
 
     /**
      * Définir la relation avec les absences.
+     *
+     *
      *
      * @return HasMany<Absence>
      */
