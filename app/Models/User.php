@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     use SoftDeletes;
 
-    protected $fillable = ['prenom', 'nom', 'email'];
+    protected $fillable = ['prenom', 'nom', 'email', 'password'];
 
     /**
      * Définir la relation avec les absences.

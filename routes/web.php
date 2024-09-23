@@ -1,30 +1,31 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\MotifController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('cool', function(){
-//     return "Cool, Laravel !";
-// });
+Route::get('/welcome', function () {
+    return view('welcome');
+});
 
-// Route::get('test/profil', function(){
-//     return "Ceci est un test";
-// })-> name('profil');
-// //permet d'utiliser route('profil')
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::get('{chiffre}/{deuxieme}', function ($chiffre, $deuxieme) {
-//     return "le résultat de $chiffre + $deuxieme est " . $chiffre + $deuxieme;
-// })->where(['chiffre' => '[0-9]+' , 'deuxieme' => '[0-9]+'])
-//   ->name("");
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// Route::get('cool', [AccueilController::class, 'index'] )->name('accueil');
-// Route::get('motif', [MotifController::class, 'index'] )->name('Motifs');
 Route::resource('/absence', AbsenceController::class);
 Route::resource('/user', UserController::class);
 Route::resource('/motif', MotifController::class);
+
+require __DIR__.'/auth.php';
