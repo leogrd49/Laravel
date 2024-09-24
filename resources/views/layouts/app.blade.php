@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,6 +12,7 @@
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
+
 <body class="font-sans antialiased bg-gray-100">
     <div class="min-h-screen flex flex-col">
         <nav class="bg-white shadow-sm">
@@ -23,15 +25,29 @@
                             </a>
                         </div>
                     </div>
-                    @auth
-                        <div class="flex items-center">
+                    <div class="flex items-center">
+
+                        <div class="mr-4">
+                            <form action="{{ url()->current() }}" method="POST" class="mr-4">
+                                @csrf
+                                <select name="language" onchange="this.form.submit()"
+                                    class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                    <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>🇬🇧 English</option>
+                                    <option value="fr" {{ app()->getLocale() == 'fr' ? 'selected' : '' }}>🇫🇷 Français</option>
+                                </select>
+                            </form>
+                        </div>
+                        @auth
                             <span class="text-gray-700 mr-4">{{ Auth::user()->prenom }} {{ Auth::user()->nom }}</span>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="text-red-600 hover:text-red-900 font-semibold">Déconnexion</button>
+                                <button type="submit" class="text-red-600 hover:text-red-900 font-semibold">
+                                    {{ __('Déconnexion') }}
+                                </button>
                             </form>
-                        </div>
-                    @endauth
+                        @endauth
+
+                    </div>
                 </div>
             </div>
         </nav>
@@ -47,10 +63,11 @@
         <footer class="bg-white shadow">
             <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                 <p class="text-center text-gray-500 text-sm">
-                    © {{ date('Y') }} {{ config('app.name', 'Laravel') }}. Tous droits réservés.
+                    © {{ date('Y') }} {{ config('app.name', 'Laravel') }}. {{ __('Tous droits réservés.') }}
                 </p>
             </div>
         </footer>
     </div>
 </body>
+
 </html>

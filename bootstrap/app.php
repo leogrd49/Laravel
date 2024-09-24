@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\CheckAdminMiddleware;
+use App\Http\Middleware\SetLanguageMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,7 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias(['check.admin' => CheckAdminMiddleware::class]);
+        $middleware->alias([
+            'check.admin' => CheckAdminMiddleware::class,
+            'set.language' => SetLanguageMiddleware::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
