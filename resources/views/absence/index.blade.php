@@ -26,7 +26,7 @@
                 <div class="flex items-center">
                     @if (Auth::user()->admin || (Auth::id() == $absence->user_id && $absence->status != 'valide'))
                         <a href="{{ route('absence.edit', $absence->id) }}" class="text-red-500 hover:text-red-700 mr-4 mb-3.5">
-                            <box-icon name='edit' type='solid' color='#FF0000'></box-icon>
+                            <box-icon name='edit' type='solid' color='#FF0000' class="mt-3.5"></box-icon>
                         </a>
                         <form action="{{ route('absence.destroy', $absence->id) }}" method="POST" class="inline">
                             @csrf

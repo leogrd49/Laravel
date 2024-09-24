@@ -50,6 +50,8 @@
     "users.delete_confirm_text": "Once deleted, this user cannot be recovered!",
     "common.na": "N/A",
     "common.delete_confirm_title": "Are you sure?",
-    "common.logged_in_as": "Logged in as"
+    "common.logged_in_as": "Logged in as",
+    "absencedetail": "Absence detail: "
+
 
 }

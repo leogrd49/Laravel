@@ -23,7 +23,7 @@
                 </div>
                 <div class="flex items-center">
                     <a href="{{ route('motif.edit', $motif->id) }}" class="text-yellow-500 hover:text-yellow-700 mr-4 mb-3.5">
-                        <box-icon name='edit' type='solid' color='#b7950b'></box-icon>
+                        <box-icon name='edit' type='solid' color='#b7950b' class="mt-3.5"></box-icon>
                     </a>
                     <form action="{{ route('motif.destroy', $motif->id) }}" method="POST" class="inline">
                         @csrf

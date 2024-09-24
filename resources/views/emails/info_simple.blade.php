@@ -13,7 +13,7 @@
                 <p>{{ $content }}</p>
 
                 @if(!empty($details))
-                    <h2 style="color: #333;">Détails de l'absence :</h2>
+                    <h2 style="color: #333;">{{ __('absencedetail') }}</h2>
                     <table cellpadding="8" cellspacing="0" border="0" width="100%" style="border-collapse: collapse;">
                         @foreach($details as $key => $value)
                             <tr>

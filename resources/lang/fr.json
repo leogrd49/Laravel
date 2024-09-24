@@ -52,6 +52,7 @@
     "common.na": "N/A",
     "common.delete_confirm_title": "Êtes-vous sûr ?",
 
-    "common.logged_in_as": "Connecté en tant que"
+    "common.logged_in_as": "Connecté en tant que",
+    "absencedetail": "Détails de l'absence :"
 
 }

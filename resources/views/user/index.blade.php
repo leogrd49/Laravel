@@ -24,11 +24,11 @@
                 <div class="flex items-center">
                     <a href="{{ route('user.show', $user->id) }}"
                         class="text-blue-500 hover:text-blue-700 font-semibold mr-4 mb-3.5">
-                        <box-icon name='spreadsheet' color='#0000FF'></box-icon>
+                        <box-icon name='spreadsheet' color='#0000FF' class="mt-3.5"></box-icon>
                     </a>
                     <a href="{{ route('user.edit', $user->id) }}"
                         class="text-blue-500 hover:text-blue-700 font-semibold mr-4 mb-3.5">
-                        <box-icon name='edit' type='solid' color='#0000FF'></box-icon>
+                        <box-icon name='edit' type='solid' color='#0000FF' class="mt-3.5"></box-icon>
                     </a>
                     <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="inline">
                         @csrf
