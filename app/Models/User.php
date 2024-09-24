@@ -61,10 +61,7 @@ use Silber\Bouncer\Database\HasRolesAndAbilities;
 class User extends Authenticatable
 {
     /** @use HasFactory<AbsenceFactory>  */
-    use HasFactory, Notifiable;
-
-    use HasRolesAndAbilities;
-    use SoftDeletes;
+    use HasFactory, Notifiable, HasRolesAndAbilities, SoftDeletes;
 
     protected $fillable = ['prenom', 'nom', 'email', 'password', 'admin'];
 

@@ -7,6 +7,8 @@ use App\Models\Motif;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InfoMail;
 
 class AbsenceController extends Controller
 {
@@ -18,7 +20,6 @@ class AbsenceController extends Controller
         } else {
             $absences = $user->absences;
         }
-
         return view('absence.index', compact('absences'));
     }
 
@@ -27,7 +28,6 @@ class AbsenceController extends Controller
         $user = Auth::user();
         $users = $user->admin ? User::all() : [$user];
         $motifs = Motif::all();
-
         return view('absence.create', compact('users', 'motifs'));
     }
 
@@ -41,11 +41,36 @@ class AbsenceController extends Controller
             'date_fin' => 'required|date|after_or_equal:date_debut',
         ]);
 
-        if (! $user->admin && $data['user_id'] !== $user->id) {
+        if (!$user->admin && $data['user_id'] != $user->id) {
             return redirect()->route('absence.index')->with('error', 'Vous ne pouvez pas créer une absence pour un autre utilisateur.');
         }
 
-        Absence::create($data);
+        $absence = Absence::create($data);
+        $motif = Motif::find($data['motif_id']);
+        $concernedUser = User::find($data['user_id']);
+
+        $details = [
+            'Utilisateur' => $concernedUser->prenom . ' ' . $concernedUser->nom,
+            'Motif' => $motif->libelle,
+            'Date de début' => $absence->date_debut,
+            'Date de fin' => $absence->date_fin,
+            'Statut' => $absence->status,
+        ];
+
+        Mail::to($user->email)->send(new InfoMail(
+            'Nouvelle absence créée',
+            "Une nouvelle absence a été créée.",
+            $details
+        ));
+
+        $admins = User::where('admin', true)->get();
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->send(new InfoMail(
+                'Nouvelle absence créée',
+                "Une nouvelle absence a été créée par {$user->prenom} {$user->nom}.",
+                $details
+            ));
+        }
 
         return redirect()->route('absence.index')->with('success', 'Absence créée avec succès.');
     }
@@ -53,20 +78,19 @@ class AbsenceController extends Controller
     public function edit(Absence $absence)
     {
         $user = Auth::user();
-        if (! $user->admin && ($absence->user_id !== $user->id || $absence->status === 'valide')) {
+        if (!$user->admin && ($absence->user_id != $user->id || $absence->status == 'valide')) {
             return redirect()->route('absence.index')->with('error', 'Vous ne pouvez pas modifier cette absence.');
         }
 
         $users = $user->admin ? User::all() : [$user];
         $motifs = Motif::all();
-
         return view('absence.edit', compact('absence', 'users', 'motifs'));
     }
 
     public function update(Request $request, Absence $absence)
     {
         $user = Auth::user();
-        if (! $user->admin && ($absence->user_id !== $user->id || $absence->status === 'valide')) {
+        if (!$user->admin && ($absence->user_id != $user->id || $absence->status == 'valide')) {
             return redirect()->route('absence.index')->with('error', 'Vous ne pouvez pas modifier cette absence.');
         }
 
@@ -82,6 +106,30 @@ class AbsenceController extends Controller
         }
 
         $absence->update($data);
+        $motif = Motif::find($data['motif_id']);
+        $concernedUser = User::find($data['user_id']);
+
+        $details = [
+            'Utilisateur' => $concernedUser->prenom . ' ' . $concernedUser->nom,
+            'Motif' => $motif->libelle,
+            'Date de début' => $absence->date_debut,
+            'Date de fin' => $absence->date_fin,
+            'Statut' => $absence->status,
+        ];
+
+        if ($user->admin && $user->id != $absence->user_id) {
+            Mail::to($concernedUser->email)->send(new InfoMail(
+                'Votre absence a été modifiée',
+                "Votre absence a été mise à jour par un administrateur.",
+                $details
+            ));
+        }
+
+        Mail::to($user->email)->send(new InfoMail(
+            'Absence mise à jour',
+            "L'absence a été mise à jour.",
+            $details
+        ));
 
         return redirect()->route('absence.index')->with('success', 'Absence mise à jour avec succès.');
     }
@@ -89,11 +137,25 @@ class AbsenceController extends Controller
     public function destroy(Absence $absence)
     {
         $user = Auth::user();
-        if (! $user->admin && $absence->user_id !== $user->id) {
+        if (!$user->admin && $absence->user_id != $user->id) {
             return redirect()->route('absence.index')->with('error', 'Vous ne pouvez pas supprimer cette absence.');
         }
 
+        $details = [
+            'Utilisateur' => $absence->user->prenom . ' ' . $absence->user->nom,
+            'Motif' => $absence->motif->libelle,
+            'Date de début' => $absence->date_debut,
+            'Date de fin' => $absence->date_fin,
+            'Statut' => $absence->status,
+        ];
+
         $absence->delete();
+
+        Mail::to($user->email)->send(new InfoMail(
+            'Absence supprimée',
+            "L'absence a été supprimée.",
+            $details
+        ));
 
         return redirect()->route('absence.index')->with('success', 'Absence supprimée avec succès.');
     }
