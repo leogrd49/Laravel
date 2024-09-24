@@ -10,7 +10,7 @@ class CheckAdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user() || !$request->user()->admin) {
+        if (! $request->user() || ! $request->user()->admin) {
             abort(403, 'Accès non autorisé.');
         }
 

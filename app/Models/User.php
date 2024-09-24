@@ -11,34 +11,43 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 
-
 /**
  * @property int $id
  * @property string $prenom
  * @property string $nom
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
- * @property mixed $password
+ * @property mixed|null $password
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property int $admin
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Silber\Bouncer\Database\Ability> $abilities
+ * @property-read int|null $abilities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Absence> $absences
  * @property-read int|null $absences_count
+ * @property-read mixed $initiales
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Silber\Bouncer\Database\Role> $roles
+ * @property-read int|null $roles_count
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAdmin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIs($role)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIsAll($role)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIsNot($role)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereNom($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePrenom($value)
@@ -53,24 +62,19 @@ class User extends Authenticatable
 {
     /** @use HasFactory<AbsenceFactory>  */
     use HasFactory, Notifiable;
+
     use HasRolesAndAbilities;
-
-
     use SoftDeletes;
 
     protected $fillable = ['prenom', 'nom', 'email', 'password', 'admin'];
 
-
     public function getInitialesAttribute()
     {
-        return ucfirst($this->prenom)[0] . ucfirst($this->nom)[0];
+        return ucfirst($this->prenom)[0].ucfirst($this->nom)[0];
     }
-
 
     /**
      * Définir la relation avec les absences.
-     *
-     *
      *
      * @return HasMany<Absence>
      */

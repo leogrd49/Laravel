@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $date_fin
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $status
  *
  * @property-read \App\Models\Motif $motif
  * @property-read \App\Models\User $user
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Absence whereDateFin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Absence whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Absence whereMotifId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Absence whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Absence whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Absence whereUserId($value)
  *
@@ -43,9 +45,8 @@ class Absence extends Model
         'motif_id',
         'date_debut',
         'date_fin',
-        'status'
+        'status',
     ];
-
 
     /**
      * Définir la relation avec l'utilisateur.
