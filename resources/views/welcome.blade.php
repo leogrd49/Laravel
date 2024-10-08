@@ -13,6 +13,9 @@
             <p class="text-xl font-semibold">{{ __('common.logged_in_as') }}: <span class="text-green-700">{{ Auth::user()->prenom }} {{ Auth::user()->nom }}</span></p>
         </div>
 
+        {{-- TEST COMPOSANT  --}}
+        {{-- <x-inputs.text property='libelle' default="" label="oui"/> --}}
+
         <div class="space-y-4">
             <a href="{{ route('absence.index') }}" class="bg-red-300 rounded-lg border border-red-800 p-4 flex justify-between items-center hover:bg-red-400 transition duration-300">
                 <span class="text-xl font-semibold text-red-800">{{ __('common.absences') }}</span>

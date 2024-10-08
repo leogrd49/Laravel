@@ -2,18 +2,18 @@
 
 @section('titre', __('absence.create'))
 
+@section('content')
 <div class="flex flex-col items-center justify-center min-h-screen py-6 px-4 bg-gray-100">
-    <h2 class="text-center text-green-300 font-bold mb-6 text-2xl">{{ __('absence.create') }}</h2>
+    <x-page-title class="text-green-300 mb-6">{{ __('absence.create') }}</x-page-title>
 
-    <a href="{{ url('/') }}" class="mb-6 bg-green-300 text-green-800 font-bold py-2 px-4 rounded-lg border border-green-800 hover:bg-green-400">
+    <x-back-button href="{{ url('/') }}" class="mb-6">
         {{ __('common.back') }}
-    </a>
+    </x-back-button>
 
-    <form action="{{ route('absence.store') }}" method="POST" class="w-full max-w-lg bg-white p-6 rounded-lg shadow-md">
+    <x-form-wrapper action="{{ route('absence.store') }}" method="POST">
         @csrf
 
-        <div class="mb-4">
-            <label for="user_id" class="block text-gray-700 text-sm font-bold mb-2">{{ __('absence.user') }}</label>
+        <x-form-field name="user_id" label="{{ __('absence.user') }}">
             <select name="user_id" id="user_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 <option value="">{{ __('absence.select_user') }}</option>
                 @foreach ($users as $user)
@@ -22,13 +22,9 @@
                     </option>
                 @endforeach
             </select>
-            @error('user_id')
-                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-            @enderror
-        </div>
+        </x-form-field>
 
-        <div class="mb-4">
-            <label for="motif_id" class="block text-gray-700 text-sm font-bold mb-2">{{ __('absence.reason') }}</label>
+        <x-form-field name="motif_id" label="{{ __('absence.reason') }}">
             <select name="motif_id" id="motif_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 <option value="">{{ __('absence.select_reason') }}</option>
                 @foreach ($motifs as $motif)
@@ -37,31 +33,19 @@
                     </option>
                 @endforeach
             </select>
-            @error('motif_id')
-                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-            @enderror
-        </div>
+        </x-form-field>
 
-        <div class="mb-4">
-            <label for="date_debut" class="block text-gray-700 text-sm font-bold mb-2">{{ __('absence.start_date') }}</label>
+        <x-form-field name="date_debut" label="{{ __('absence.start_date') }}">
             <input type="date" name="date_debut" id="date_debut" value="{{ old('date_debut') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            @error('date_debut')
-                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-            @enderror
-        </div>
+        </x-form-field>
 
-        <div class="mb-4">
-            <label for="date_fin" class="block text-gray-700 text-sm font-bold mb-2">{{ __('absence.end_date') }}</label>
+        <x-form-field name="date_fin" label="{{ __('absence.end_date') }}">
             <input type="date" name="date_fin" id="date_fin" value="{{ old('date_fin') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            @error('date_fin')
-                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-            @enderror
-        </div>
+        </x-form-field>
 
-        <div class="flex items-center justify-center">
-            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                {{ __('common.create') }}
-            </button>
-        </div>
-    </form>
+        <x-submit-button>
+            {{ __('common.create') }}
+        </x-submit-button>
+    </x-form-wrapper>
 </div>
+@endsection
