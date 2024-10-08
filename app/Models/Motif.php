@@ -9,17 +9,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * 
- *
  * @property int $id
  * @property string $libelle
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property int $is-accessible-salarie
+ * @property int $is_accessible_salarie
  * @property string|null $description
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Absence> $absences
  * @property-read int|null $absences_count
+ *
  * @method static \Database\Factories\MotifFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Motif newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Motif newQuery()
@@ -34,27 +34,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Motif whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Motif withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Motif withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Motif extends Model
 {
     use HasFactory, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'libelle',
-        'is_accessible_salarie',
-    ];
+    protected $fillable = ['libelle', 'is_accessible_salarie'];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'is_accessible_salarie' => 'boolean',
     ];
@@ -74,6 +62,6 @@ class Motif extends Model
      */
     protected static function newFactory()
     {
-        return \Database\Factories\MotifFactory::new();
+        return MotifFactory::new();
     }
 }

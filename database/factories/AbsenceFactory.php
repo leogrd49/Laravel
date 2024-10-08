@@ -5,8 +5,8 @@ namespace Database\Factories;
 use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AbsenceFactory extends Factory
 {

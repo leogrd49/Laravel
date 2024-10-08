@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use App\Models\User;
+use App\Mail\InfoMail;
 use App\Models\Absence;
 use App\Models\Motif;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\InfoMail;
+use Tests\TestCase;
 
 class AbsenceControllerTest extends TestCase
 {

@@ -16,6 +16,7 @@ class SetLanguageMiddleware
             if (in_array($language, ['en', 'fr'])) {
                 session()->put('locale', $language);
                 App::setLocale($language);
+
                 return redirect()->back();
             }
         }

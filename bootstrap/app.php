@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'check.admin' => CheckAdminMiddleware::class,
-            'set.language' => SetLanguageMiddleware::class
+            'set.language' => SetLanguageMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

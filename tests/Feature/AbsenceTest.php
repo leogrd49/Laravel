@@ -2,11 +2,9 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use App\Models\Absence;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AbsenceTest extends TestCase
 {
@@ -19,7 +17,7 @@ class AbsenceTest extends TestCase
             'user_id' => $user->id,
             'start_date' => '2023-01-01',
             'end_date' => '2023-01-05',
-            'reason' => 'Vacation'
+            'reason' => 'Vacation',
         ];
 
         $response = $this->actingAs($user)->post('/absence', $absenceData);

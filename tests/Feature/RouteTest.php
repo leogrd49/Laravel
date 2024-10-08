@@ -1,8 +1,9 @@
 <?php
 
 namespace Tests\Unit;
-use Tests\TestCase;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RouteTest extends TestCase
 {
