@@ -6,11 +6,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-/**
- * @property string $subject
- * @property string $content
- * @property array<string, mixed> $details // Specify the value type for array
- */
 class InfoMail extends Mailable
 {
     use Queueable, SerializesModels;
@@ -23,14 +18,11 @@ class InfoMail extends Mailable
      *
      * @param string $subject
      * @param string $content
-     * @param array<string, mixed> $details // Specify the value type for the parameter
+     * @param array<string, mixed> $details
      */
     public function __construct(string $subject, string $content, array $details = [])
     {
-        // Call the parent constructor without arguments
-        parent::__construct();
-
-        $this->subject($subject); // Set the subject directly
+        $this->subject = $subject;
         $this->content = $content;
         $this->details = $details;
     }

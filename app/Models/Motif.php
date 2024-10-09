@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property int $is_accessible_salarie
+ * @property int $is-accessible-salarie
  * @property string|null $description
  *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Absence> $absences
@@ -41,10 +41,10 @@ class Motif extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['libelle', 'is_accessible_salarie'];
+    protected $fillable = ['libelle', 'is-accessible-salarie', 'description'];
 
     protected $casts = [
-        'is_accessible_salarie' => 'boolean',
+        'is-accessible-salarie' => 'boolean',
     ];
 
     /**

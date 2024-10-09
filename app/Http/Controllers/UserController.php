@@ -2,96 +2,108 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
-use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
-    public function index(): \Illuminate\View\View
+    public function index()
     {
+        if (! Auth::user()->admin) {
+            abort(403, 'Unauthorized action.');
+        }
         $users = User::all();
-
         return view('user.index', compact('users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): \Illuminate\View\View
+    public function create()
     {
+        if (! Auth::user()->admin) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(UserRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request)
     {
-        $validated = $request->validated();
+        if (! Auth::user()->admin) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'prenom' => ['required', 'string', 'max:255'],
+            'nom' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
 
         User::create([
-            'prenom' => $validated['prenom'],
-            'nom' => $validated['nom'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
+            'prenom' => $request->prenom,
+            'nom' => $request->nom,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
         return redirect()->route('user.index')->with('success', 'User created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id): \Illuminate\View\View
+    public function show(User $user)
     {
-        $user = User::findOrFail($id);
+        if (! Auth::user()->admin && Auth::id() !== $user->id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $absences = $user->absences;
         $motifs = Motif::all();
-        $absences = Absence::where('user_id', $user->id)->get();
-
-        // dd($user, $absences, $motifs);
-
         return view('user.show', compact('user', 'absences', 'motifs'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(int $id): \Illuminate\View\View
+    public function edit(User $user)
     {
-        $user = User::findOrFail($id);
+        if (! Auth::user()->admin && Auth::id() !== $user->id) {
+            abort(403, 'Unauthorized action.');
+        }
 
         return view('user.edit', compact('user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UserRequest $request, int $id): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
+        if (! Auth::user()->admin && Auth::id() !== $user->id) {
+            abort(403, 'Unauthorized action.');
+        }
 
-        $validated = $request->validated();
+        $request->validate([
+            'prenom' => ['required', 'string', 'max:255'],
+            'nom' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+        ]);
 
         $user->update([
-            'prenom' => $validated['prenom'],
-            'nom' => $validated['nom'],
-            'email' => $validated['email'],
-            'password' => isset($validated['password']) ? bcrypt($validated['password']) : $user->password,
+            'prenom' => $request->prenom,
+            'nom' => $request->nom,
+            'email' => $request->email,
         ]);
+
+        if ($request->filled('password')) {
+            $user->update(['password' => Hash::make($request->password)]);
+        }
 
         return redirect()->route('user.index')->with('success', 'User updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(int $id): \Illuminate\Http\RedirectResponse
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        if (! Auth::user()->admin) {
+            abort(403, 'Unauthorized action.');
+        }
 
-        return redirect()->route('user.index');
+        $user->delete();
+        return redirect()->route('user.index')->with('success', 'User deleted successfully.');
     }
 }
