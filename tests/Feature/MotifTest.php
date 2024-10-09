@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Motif;
-use App\Models\User;
 use App\Models\Absence;
+use App\Models\Motif;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -68,7 +67,7 @@ class MotifTest extends TestCase
 
     public function test_motif_has_correct_fillable_attributes()
     {
-        $motif = new Motif();
+        $motif = new Motif;
 
         $this->assertEquals(['libelle', 'is-accessible-salarie', 'description'], $motif->getFillable());
     }

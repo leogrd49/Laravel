@@ -18,7 +18,7 @@ class CheckAdminMiddlewareTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->middleware = new CheckAdminMiddleware();
+        $this->middleware = new CheckAdminMiddleware;
     }
 
     public function test_admin_user_can_access()
@@ -30,7 +30,7 @@ class CheckAdminMiddlewareTest extends TestCase
         });
 
         $response = $this->middleware->handle($request, function ($req) {
-            return new Response();
+            return new Response;
         });
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -48,7 +48,7 @@ class CheckAdminMiddlewareTest extends TestCase
         });
 
         $this->middleware->handle($request, function ($req) {
-            return new Response();
+            return new Response;
         });
     }
 
@@ -63,7 +63,7 @@ class CheckAdminMiddlewareTest extends TestCase
         });
 
         $this->middleware->handle($request, function ($req) {
-            return new Response();
+            return new Response;
         });
     }
 }

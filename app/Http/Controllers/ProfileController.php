@@ -21,6 +21,10 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
+        if (! $user) {
+            return Redirect::route('login');
+        }
+
         $validatedData = $request->validated();
 
         $user->fill($validatedData);
@@ -41,6 +45,9 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        if (! $user) {
+            return Redirect::route('login');
+        }
 
         Auth::logout();
 

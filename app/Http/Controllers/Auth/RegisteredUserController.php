@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
@@ -29,7 +30,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'prenom' => ['required', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -37,12 +38,11 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
-            'prenom' => $request->prenom,
-            'nom' => $request->nom,
-            'email' => $request->email,
+            'prenom' => $validated['prenom'],
+            'nom' => $validated['nom'],
+            'email' => $validated['email'],
             'email_verified_at' => now(),
-            'password' => bcrypt($request->password),
-
+            'password' => Hash::make($validated['password']),
             'remember_token' => Str::random(10),
         ]);
 

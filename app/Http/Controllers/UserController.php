@@ -4,37 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Models\Motif;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        if (! Auth::user()->admin) {
+        $user = Auth::user();
+        if (! $user || ! $user->admin) {
             abort(403, 'Unauthorized action.');
         }
         $users = User::all();
+
         return view('user.index', compact('users'));
     }
 
-    public function create()
+    public function create(): View
     {
-        if (! Auth::user()->admin) {
+        $user = Auth::user();
+        if (! $user || ! $user->admin) {
             abort(403, 'Unauthorized action.');
         }
+
         return view('user.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        if (! Auth::user()->admin) {
+        $user = Auth::user();
+        if (! $user || ! $user->admin) {
             abort(403, 'Unauthorized action.');
         }
 
-        $request->validate([
+        $validated = $request->validate([
             'prenom' => ['required', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -42,68 +49,74 @@ class UserController extends Controller
         ]);
 
         User::create([
-            'prenom' => $request->prenom,
-            'nom' => $request->nom,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'prenom' => $validated['prenom'],
+            'nom' => $validated['nom'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
         ]);
 
         return redirect()->route('user.index')->with('success', 'User created successfully.');
     }
 
-    public function show(User $user)
+    public function show(User $user): View
     {
-        if (! Auth::user()->admin && Auth::id() !== $user->id) {
+        $authUser = Auth::user();
+        if (! $authUser || (! $authUser->admin && $authUser->id !== $user->id)) {
             abort(403, 'Unauthorized action.');
         }
 
         $absences = $user->absences;
         $motifs = Motif::all();
+
         return view('user.show', compact('user', 'absences', 'motifs'));
     }
 
-    public function edit(User $user)
+    public function edit(User $user): View
     {
-        if (! Auth::user()->admin && Auth::id() !== $user->id) {
+        $authUser = Auth::user();
+        if (! $authUser || (! $authUser->admin && $authUser->id !== $user->id)) {
             abort(403, 'Unauthorized action.');
         }
 
         return view('user.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
-        if (! Auth::user()->admin && Auth::id() !== $user->id) {
+        $authUser = Auth::user();
+        if (! $authUser || (! $authUser->admin && $authUser->id !== $user->id)) {
             abort(403, 'Unauthorized action.');
         }
 
-        $request->validate([
+        $validated = $request->validate([
             'prenom' => ['required', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user->update([
-            'prenom' => $request->prenom,
-            'nom' => $request->nom,
-            'email' => $request->email,
+            'prenom' => $validated['prenom'],
+            'nom' => $validated['nom'],
+            'email' => $validated['email'],
         ]);
 
-        if ($request->filled('password')) {
-            $user->update(['password' => Hash::make($request->password)]);
+        if (isset($validated['password'])) {
+            $user->update(['password' => Hash::make($validated['password'])]);
         }
 
         return redirect()->route('user.index')->with('success', 'User updated successfully.');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
-        if (! Auth::user()->admin) {
+        $authUser = Auth::user();
+        if (! $authUser || ! $authUser->admin) {
             abort(403, 'Unauthorized action.');
         }
 
         $user->delete();
+
         return redirect()->route('user.index')->with('success', 'User deleted successfully.');
     }
 }

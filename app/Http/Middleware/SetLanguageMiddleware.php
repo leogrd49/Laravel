@@ -13,7 +13,7 @@ class SetLanguageMiddleware
     {
         if ($request->isMethod('post') && $request->has('language')) {
             $language = $request->input('language');
-            if (in_array($language, ['en', 'fr'])) {
+            if (is_string($language) && in_array($language, ['en', 'fr'])) {
                 session()->put('locale', $language);
                 App::setLocale($language);
 
@@ -22,7 +22,10 @@ class SetLanguageMiddleware
         }
 
         if (session()->has('locale')) {
-            App::setLocale(session()->get('locale'));
+            $locale = session()->get('locale');
+            if (is_string($locale)) {
+                App::setLocale($locale);
+            }
         }
 
         return $next($request);

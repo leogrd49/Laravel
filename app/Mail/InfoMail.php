@@ -11,14 +11,14 @@ class InfoMail extends Mailable
     use Queueable, SerializesModels;
 
     public string $content;
+
+    /** @var array<string, mixed> */
     public array $details;
 
     /**
      * Create a new message instance.
      *
-     * @param string $subject
-     * @param string $content
-     * @param array<string, mixed> $details
+     * @param  array<string, mixed>  $details
      */
     public function __construct(string $subject, string $content, array $details = [])
     {

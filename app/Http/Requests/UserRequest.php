@@ -28,7 +28,7 @@ class UserRequest extends FormRequest
         return [
             'prenom' => 'required|string|max:255',
             'nom' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,'.($userId ?? 'NULL'),
+            'email' => 'required|email|unique:users,email,'.($userId && is_object($userId) && method_exists($userId, 'getKey') ? $userId->getKey() : 'NULL'),
             'password' => 'nullable|string|min:8|confirmed',
         ];
     }

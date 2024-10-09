@@ -3,10 +3,9 @@
 namespace Tests\Feature;
 
 use App\Mail\InfoMail;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class InfoMailTest extends TestCase
 {

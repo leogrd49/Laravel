@@ -6,36 +6,43 @@ use App\Mail\InfoMail;
 use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class AbsenceController extends Controller
 {
-    public function index(): \Illuminate\View\View
+    public function index(): View
     {
         $user = Auth::user();
-        if ($user->admin) {
-            $absences = Absence::all();
-        } else {
-            $absences = $user->absences;
+        if (! $user) {
+            abort(403, 'Unauthorized action.');
         }
+        $absences = $user->admin ? Absence::all() : $user->absences;
 
         return view('absence.index', compact('absences'));
     }
 
-    public function create(): \Illuminate\View\View
+    public function create(): View
     {
         $user = Auth::user();
-        $users = $user->admin ? User::all() : collect([$user]);  // Assure que $users est une collection même pour un seul utilisateur
+        if (! $user) {
+            abort(403, 'Unauthorized action.');
+        }
+        $users = $user->admin ? User::all() : collect([$user]);
         $motifs = Motif::all();
 
         return view('absence.create', compact('users', 'motifs'));
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $user = Auth::user();
+        if (! $user) {
+            abort(403, 'Unauthorized action.');
+        }
         $data = $request->validate([
             'user_id' => 'required|exists:users,id',
             'motif_id' => 'required|exists:motifs,id',
@@ -53,7 +60,7 @@ class AbsenceController extends Controller
 
         if ($concernedUser instanceof User && $motif instanceof Motif) {
             $details = [
-                'Utilisateur' => $concernedUser->prenom . ' ' . $concernedUser->nom,
+                'Utilisateur' => $concernedUser->prenom.' '.$concernedUser->nom,
                 'Motif' => $motif->libelle,
                 'Date de début' => $absence->date_debut,
                 'Date de fin' => $absence->date_fin,
@@ -79,9 +86,12 @@ class AbsenceController extends Controller
         return redirect()->route('absence.index')->with('success', 'Absence créée avec succès.');
     }
 
-    public function edit(Absence $absence): \Illuminate\View\View
+    public function edit(Absence $absence): View
     {
         $user = Auth::user();
+        if (! $user) {
+            abort(403, 'Unauthorized action.');
+        }
 
         if (! $user->admin && ($absence->user_id !== $user->id || $absence->status === 'valide')) {
             return view('absence.index', ['error' => 'Vous ne pouvez pas modifier cette absence.']);
@@ -93,9 +103,12 @@ class AbsenceController extends Controller
         return view('absence.edit', compact('absence', 'users', 'motifs'));
     }
 
-    public function update(Request $request, Absence $absence): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Absence $absence): RedirectResponse
     {
         $user = Auth::user();
+        if (! $user) {
+            abort(403, 'Unauthorized action.');
+        }
         if (! $user->admin && ($absence->user_id !== $user->id || $absence->status === 'valide')) {
             return redirect()->route('absence.index')->with('error', 'Vous ne pouvez pas modifier cette absence.');
         }
@@ -117,7 +130,7 @@ class AbsenceController extends Controller
 
         if ($concernedUser instanceof User && $motif instanceof Motif) {
             $details = [
-                'Utilisateur' => $concernedUser->prenom . ' ' . $concernedUser->nom,
+                'Utilisateur' => $concernedUser->prenom.' '.$concernedUser->nom,
                 'Motif' => $motif->libelle,
                 'Date de début' => $absence->date_debut,
                 'Date de fin' => $absence->date_fin,
@@ -142,15 +155,18 @@ class AbsenceController extends Controller
         return redirect()->route('absence.index')->with('success', 'Absence mise à jour avec succès.');
     }
 
-    public function destroy(Absence $absence): \Illuminate\Http\RedirectResponse
+    public function destroy(Absence $absence): RedirectResponse
     {
         $user = Auth::user();
+        if (! $user) {
+            abort(403, 'Unauthorized action.');
+        }
         if (! $user->admin && $absence->user_id !== $user->id) {
             return redirect()->route('absence.index')->with('error', 'Vous ne pouvez pas supprimer cette absence.');
         }
 
         $details = [
-            'Utilisateur' => $absence->user->prenom . ' ' . $absence->user->nom,
+            'Utilisateur' => $absence->user->prenom.' '.$absence->user->nom,
             'Motif' => $absence->motif->libelle,
             'Date de début' => $absence->date_debut,
             'Date de fin' => $absence->date_fin,

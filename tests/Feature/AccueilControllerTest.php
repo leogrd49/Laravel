@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Http\Controllers\AccueilController;
 use Illuminate\Support\Facades\Route;
+use Tests\TestCase;
 
 class AccueilControllerTest extends TestCase
 {
@@ -23,13 +23,13 @@ class AccueilControllerTest extends TestCase
 
     public function test_accueil_controller_is_instantiable()
     {
-        $controller = new AccueilController();
+        $controller = new AccueilController;
         $this->assertInstanceOf(AccueilController::class, $controller);
     }
 
     public function test_index_method_returns_view()
     {
-        $controller = new AccueilController();
+        $controller = new AccueilController;
         $response = $controller->index();
         $this->assertEquals('welcome', $response->name());
     }
@@ -40,5 +40,4 @@ class AccueilControllerTest extends TestCase
         $route = Route::getRoutes()->getByName('accueil');
         $this->assertEquals('App\Http\Controllers\AccueilController@index', $route->getAction('uses'));
     }
-
 }

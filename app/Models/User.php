@@ -28,7 +28,7 @@ use Silber\Bouncer\Database\HasRolesAndAbilities;
  * @property-read int|null $abilities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Absence> $absences
  * @property-read int|null $absences_count
- * @property-read mixed $initiales
+ * @property-read string $initiales
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Silber\Bouncer\Database\Role> $roles
@@ -67,7 +67,7 @@ class User extends Authenticatable
 
     public function getInitialesAttribute(): string
     {
-        return ucfirst($this->prenom)[0] . ucfirst($this->nom)[0];
+        return ucfirst($this->prenom)[0].ucfirst($this->nom)[0];
     }
 
     /**

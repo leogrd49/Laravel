@@ -35,12 +35,18 @@ class MotifController extends Controller
      */
     public function store(MotifRequest $request): RedirectResponse
     {
+        $libelle = $request->input('libelle');
+        if (! is_string($libelle)) {
+            throw new \InvalidArgumentException('Libelle must be a string');
+        }
+
         $motif = new Motif();
-        $motif->libelle = $request->input('libelle');
-        $motif->is_accessible_salarie = $request->input('is-accessible-salarie') === '1'; // Convert to boolean
+        $motif->libelle = $libelle;
+        $motif->is_accessible_salarie = $request->input('is-accessible-salarie') === '1';
         $motif->save();
 
         Cache::forget('motifs');
+
         return redirect()->route('motif.index')->with('success', 'Motif created successfully.');
     }
 
@@ -65,11 +71,17 @@ class MotifController extends Controller
      */
     public function update(MotifRequest $request, Motif $motif): RedirectResponse
     {
-        $motif->libelle = $request->input('libelle');
+        $libelle = $request->input('libelle');
+        if (! is_string($libelle)) {
+            throw new \InvalidArgumentException('Libelle must be a string');
+        }
+
+        $motif->libelle = $libelle;
         $motif->is_accessible_salarie = $request->input('is-accessible-salarie') === '1';
         $motif->save();
 
         Cache::forget('motifs');
+
         return redirect()->route('motif.index')->with('success', 'Motif updated successfully.');
     }
 

@@ -39,16 +39,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Motif extends Model
 {
+    /**
+     * @use HasFactory<MotifFactory>
+     */
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['libelle', 'is-accessible-salarie', 'description'];
+    protected $fillable = ['libelle', 'is_accessible_salarie', 'description'];
 
     protected $casts = [
-        'is-accessible-salarie' => 'boolean',
+        'is_accessible_salarie' => 'boolean',
     ];
 
     /**
      * Define the relation with absences.
+     *
+     * @return HasMany<Absence>
      */
     public function absences(): HasMany
     {
@@ -57,10 +62,8 @@ class Motif extends Model
 
     /**
      * Get the factory instance for the model.
-     *
-     * @return MotifFactory
      */
-    protected static function newFactory()
+    protected static function newFactory(): MotifFactory
     {
         return MotifFactory::new();
     }
